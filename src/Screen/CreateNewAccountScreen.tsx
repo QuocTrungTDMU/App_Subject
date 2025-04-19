@@ -11,15 +11,16 @@ import {
 import {PaperProvider, Button} from 'react-native-paper';
 import MailIcon from '../IconComponents/MailIcon';
 import LockIcon from '../IconComponents/LockIcon';
+
 type ScreenName = 'Login' | 'ForgotPassword' | 'CreateNewAccount';
 
-interface LoginScreenProps {
+interface CreateNewAccountScreenProps {
   navigate: (screen: ScreenName) => void;
 }
 
-const LoginScreen = ({navigate}: LoginScreenProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const CreateNewAccountScreen = ({navigate}: CreateNewAccountScreenProps) => {
+  const [email, setEmail] = useState('test@test.com');
+  const [password, setPassword] = useState('pass@123');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
@@ -54,7 +55,7 @@ const LoginScreen = ({navigate}: LoginScreenProps) => {
     }
   };
 
-  const handleLogin = () => {
+  const handleCreateAccount = () => {
     let isValid = true;
 
     if (!email || !validateEmail(email)) {
@@ -66,8 +67,7 @@ const LoginScreen = ({navigate}: LoginScreenProps) => {
     }
 
     if (isValid) {
-      Alert.alert('Success', 'Login successful!');
-      console.log('Login with:', {email, password});
+      Alert.alert('Success', 'Create successful!');
     }
   };
 
@@ -81,7 +81,7 @@ const LoginScreen = ({navigate}: LoginScreenProps) => {
             resizeMode="contain"
           />
         </View>
-        <Text style={styles.welcomeText}>Welcome back!</Text>
+        <Text style={styles.titleText}>Create a new account!</Text>
         <View style={styles.inputContainer}>
           <MailIcon width={24} height={24} color="#000" />
           <TextInput
@@ -107,14 +107,14 @@ const LoginScreen = ({navigate}: LoginScreenProps) => {
         {passwordError ? (
           <Text style={styles.errorText}>{passwordError}</Text>
         ) : null}
-        <Button mode="contained" style={styles.button} onPress={handleLogin}>
-          Login
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={handleCreateAccount}>
+          Signup
         </Button>
-        <TouchableOpacity onPress={() => navigate('ForgotPassword')}>
-          <Text style={styles.linkText}>Forgot Password?</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate('CreateNewAccount')}>
-          <Text style={styles.linkText}>Create a new account?</Text>
+        <TouchableOpacity onPress={() => navigate('Login')}>
+          <Text style={styles.linkText}>Already have an account?</Text>
         </TouchableOpacity>
       </View>
     </PaperProvider>
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
   },
-  welcomeText: {
+  titleText: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -164,4 +164,4 @@ const styles = StyleSheet.create({
   errorText: {color: 'red', fontSize: 12, marginBottom: 10},
 });
 
-export default LoginScreen;
+export default CreateNewAccountScreen;

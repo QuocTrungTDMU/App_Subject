@@ -10,26 +10,20 @@ import {
 } from 'react-native';
 import {PaperProvider, Button} from 'react-native-paper';
 import MailIcon from '../IconComponents/MailIcon';
-import LockIcon from '../IconComponents/LockIcon';
+
 type ScreenName = 'Login' | 'ForgotPassword' | 'CreateNewAccount';
 
-interface LoginScreenProps {
+interface ForgotPasswordScreenProps {
   navigate: (screen: ScreenName) => void;
 }
 
-const LoginScreen = ({navigate}: LoginScreenProps) => {
+const ForgotPasswordScreen = ({navigate}: ForgotPasswordScreenProps) => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-  };
-
-  const validatePassword = (password: string) => {
-    return password.length >= 6;
   };
 
   const handleEmailChange = (text: string) => {
@@ -43,31 +37,15 @@ const LoginScreen = ({navigate}: LoginScreenProps) => {
     }
   };
 
-  const handlePasswordChange = (text: string) => {
-    setPassword(text);
-    if (!text) {
-      setPasswordError('Password is a required field');
-    } else if (!validatePassword(text)) {
-      setPasswordError('Password must be at least 6 characters');
-    } else {
-      setPasswordError('');
-    }
-  };
-
-  const handleLogin = () => {
+  const handleResetPassword = () => {
     let isValid = true;
 
     if (!email || !validateEmail(email)) {
       isValid = false;
     }
 
-    if (!password || !validatePassword(password)) {
-      isValid = false;
-    }
-
     if (isValid) {
-      Alert.alert('Success', 'Login successful!');
-      console.log('Login with:', {email, password});
+      Alert.alert('Success', 'Reset password sent to your email');
     }
   };
 
@@ -81,7 +59,7 @@ const LoginScreen = ({navigate}: LoginScreenProps) => {
             resizeMode="contain"
           />
         </View>
-        <Text style={styles.welcomeText}>Welcome back!</Text>
+        <Text style={styles.titleText}>Reset your password</Text>
         <View style={styles.inputContainer}>
           <MailIcon width={24} height={24} color="#000" />
           <TextInput
@@ -94,27 +72,14 @@ const LoginScreen = ({navigate}: LoginScreenProps) => {
           />
         </View>
         {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
-        <View style={styles.inputContainer}>
-          <LockIcon width={24} height={24} color="#007AFF" />
-          <TextInput
-            style={styles.input}
-            placeholder="Enter password"
-            value={password}
-            onChangeText={handlePasswordChange}
-            secureTextEntry
-          />
-        </View>
-        {passwordError ? (
-          <Text style={styles.errorText}>{passwordError}</Text>
-        ) : null}
-        <Button mode="contained" style={styles.button} onPress={handleLogin}>
-          Login
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={handleResetPassword}>
+          Send Reset Email
         </Button>
-        <TouchableOpacity onPress={() => navigate('ForgotPassword')}>
-          <Text style={styles.linkText}>Forgot Password?</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate('CreateNewAccount')}>
-          <Text style={styles.linkText}>Create a new account?</Text>
+        <TouchableOpacity onPress={() => navigate('Login')}>
+          <Text style={styles.linkText}>Go back to Login</Text>
         </TouchableOpacity>
       </View>
     </PaperProvider>
@@ -137,7 +102,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
   },
-  welcomeText: {
+  titleText: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -164,4 +129,4 @@ const styles = StyleSheet.create({
   errorText: {color: 'red', fontSize: 12, marginBottom: 10},
 });
 
-export default LoginScreen;
+export default ForgotPasswordScreen;

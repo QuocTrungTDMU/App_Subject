@@ -1,29 +1,20 @@
-import React, {useState} from 'react';
-import LoginScreen from './src/Screen/LoginScreen';
-import ForgotPasswordScreen from './src/Screen/ForgotPasswordScreen';
-import CreateNewAccountScreen from './src/Screen/CreateNewAccountScreen';
-import {PaperProvider} from 'react-native-paper';
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import HomeScreen from './src/Screen/HomeScreen';
+import DetailsScreen from './src/Screen/DetailScreen';
+import {RootStackParamList} from './src/types/index';
 
-type ScreenName = 'Login' | 'ForgotPassword' | 'CreateNewAccount';
 
-const App = () => {
-  const [currentScreen, setCurrentScreen] = useState<ScreenName>('Login');
+const Stack = createStackNavigator<RootStackParamList>();
 
-  const navigate = (screen: ScreenName) => {
-    setCurrentScreen(screen);
-  };
-
+export default function App() {
   return (
-    <PaperProvider>
-      {currentScreen === 'Login' && <LoginScreen navigate={navigate} />}
-      {currentScreen === 'ForgotPassword' && (
-        <ForgotPasswordScreen navigate={navigate} />
-      )}
-      {currentScreen === 'CreateNewAccount' && (
-        <CreateNewAccountScreen navigate={navigate} />
-      )}
-    </PaperProvider>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
-
-export default App;
+}

@@ -1,10 +1,20 @@
 import React from 'react';
-import LoginScreen from './src/Screen/LoginScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import HomeScreen from './src/Screen/HomeScreen';
+import DetailsScreen from './src/Screen/DetailScreen';
+import {RootStackParamList} from './src/types/index';
 
-const App = () => {
+
+const Stack = createStackNavigator<RootStackParamList>();
+
+export default function App() {
   return (
-    <LoginScreen/>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
-
-export default App;
+}

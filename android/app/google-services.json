@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "60069723496",
+    "project_id": "noteapp-7f9fe",
+    "storage_bucket": "noteapp-7f9fe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60069723496:android:f320f9466f485668cdaadd",
+        "android_client_info": {
+          "package_name": "com.locationsharingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbv9Ngpsgbzw9EoTKKNomB-iCs5UB-0nM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,6 +8,7 @@ interface NoteItemProps {
   note: Note;
   onEdit: (note: Note) => void;
   onDelete: (id: string) => void;
+  onPress: () => void;
 }
 
 const NoteItem: React.FC<NoteItemProps> = ({note, onEdit, onDelete}) => {

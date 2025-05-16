@@ -9,7 +9,11 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import auth from '@react-native-firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from '@react-native-firebase/auth';
 
 const Register = () => {
   const navigation = useNavigation<any>();
@@ -32,12 +36,13 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const userCredential = await auth().createUserWithEmailAndPassword(
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
         email,
         password,
       );
-      await userCredential.user.sendEmailVerification();
-
+      await sendEmailVerification(userCredential.user);
       Alert.alert(
         'Thành công',
         'Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.',
@@ -57,6 +62,7 @@ const Register = () => {
       setLoading(false);
     }
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Restaurant App - Sign Up</Text>

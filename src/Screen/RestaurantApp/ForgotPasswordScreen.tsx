@@ -9,15 +9,18 @@ import {
   Alert,
 } from 'react-native';
 import {PaperProvider, Button} from 'react-native-paper';
-import MailIcon from '../components/Icons/MailIcon';
+import MailIcon from '../../components/Icons/MailIcon';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../types';
 
-type ScreenName = 'Login' | 'ForgotPassword' | 'CreateNewAccount';
+type ForgotPasswordScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'ForgotPassword'
+>;
 
-interface ForgotPasswordScreenProps {
-  navigate: (screen: ScreenName) => void;
-}
-
-const ForgotPasswordScreen = ({navigate}: ForgotPasswordScreenProps) => {
+const ForgotPasswordScreen = () => {
+  const navigation = useNavigation<ForgotPasswordScreenNavigationProp>();
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
 
@@ -46,6 +49,7 @@ const ForgotPasswordScreen = ({navigate}: ForgotPasswordScreenProps) => {
 
     if (isValid) {
       Alert.alert('Success', 'Reset password sent to your email');
+      navigation.navigate('Login');
     }
   };
 
@@ -54,7 +58,7 @@ const ForgotPasswordScreen = ({navigate}: ForgotPasswordScreenProps) => {
       <View style={styles.container}>
         <View style={styles.logoContainer}>
           <Image
-            source={require('../../Images/logo_telegram.jpg')}
+            source={require('../../../Images/CountryFoodImage/placeholder-food.png')}
             style={styles.logoImage}
             resizeMode="contain"
           />
@@ -78,7 +82,7 @@ const ForgotPasswordScreen = ({navigate}: ForgotPasswordScreenProps) => {
           onPress={handleResetPassword}>
           Send Reset Email
         </Button>
-        <TouchableOpacity onPress={() => navigate('Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.linkText}>Go back to Login</Text>
         </TouchableOpacity>
       </View>

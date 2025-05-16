@@ -9,21 +9,28 @@ import {
   Alert,
 } from 'react-native';
 import {PaperProvider, Button} from 'react-native-paper';
-import MailIcon from '../components/Icons/MailIcon';
+import MailIcon from '../../components/Icons/MailIcon';
+import LockIcon from '../../components/Icons/LockIcon';
 
 type ScreenName = 'Login' | 'ForgotPassword' | 'CreateNewAccount';
 
-interface ForgotPasswordScreenProps {
+interface CreateNewAccountScreenProps {
   navigate: (screen: ScreenName) => void;
 }
 
-const ForgotPasswordScreen = ({navigate}: ForgotPasswordScreenProps) => {
-  const [email, setEmail] = useState('');
+const CreateNewAccountScreen = ({navigate}: CreateNewAccountScreenProps) => {
+  const [email, setEmail] = useState('test@test.com');
+  const [password, setPassword] = useState('pass@123');
   const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  };
+
+  const validatePassword = (password: string) => {
+    return password.length >= 6;
   };
 
   const handleEmailChange = (text: string) => {
@@ -37,15 +44,30 @@ const ForgotPasswordScreen = ({navigate}: ForgotPasswordScreenProps) => {
     }
   };
 
-  const handleResetPassword = () => {
+  const handlePasswordChange = (text: string) => {
+    setPassword(text);
+    if (!text) {
+      setPasswordError('Password is a required field');
+    } else if (!validatePassword(text)) {
+      setPasswordError('Password must be at least 6 characters');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const handleCreateAccount = () => {
     let isValid = true;
 
     if (!email || !validateEmail(email)) {
       isValid = false;
     }
 
+    if (!password || !validatePassword(password)) {
+      isValid = false;
+    }
+
     if (isValid) {
-      Alert.alert('Success', 'Reset password sent to your email');
+      Alert.alert('Success', 'Create successful!');
     }
   };
 
@@ -59,7 +81,7 @@ const ForgotPasswordScreen = ({navigate}: ForgotPasswordScreenProps) => {
             resizeMode="contain"
           />
         </View>
-        <Text style={styles.titleText}>Reset your password</Text>
+        <Text style={styles.titleText}>Create a new account!</Text>
         <View style={styles.inputContainer}>
           <MailIcon width={24} height={24} color="#000" />
           <TextInput
@@ -72,14 +94,27 @@ const ForgotPasswordScreen = ({navigate}: ForgotPasswordScreenProps) => {
           />
         </View>
         {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+        <View style={styles.inputContainer}>
+          <LockIcon width={24} height={24} color="#007AFF" />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter password"
+            value={password}
+            onChangeText={handlePasswordChange}
+            secureTextEntry
+          />
+        </View>
+        {passwordError ? (
+          <Text style={styles.errorText}>{passwordError}</Text>
+        ) : null}
         <Button
           mode="contained"
           style={styles.button}
-          onPress={handleResetPassword}>
-          Send Reset Email
+          onPress={handleCreateAccount}>
+          Signup
         </Button>
         <TouchableOpacity onPress={() => navigate('Login')}>
-          <Text style={styles.linkText}>Go back to Login</Text>
+          <Text style={styles.linkText}>Already have an account?</Text>
         </TouchableOpacity>
       </View>
     </PaperProvider>
@@ -129,4 +164,4 @@ const styles = StyleSheet.create({
   errorText: {color: 'red', fontSize: 12, marginBottom: 10},
 });
 
-export default ForgotPasswordScreen;
+export default CreateNewAccountScreen;

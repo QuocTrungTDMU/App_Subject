@@ -9,7 +9,9 @@ import {
   Alert,
 } from 'react-native';
 import {PaperProvider, Button} from 'react-native-paper';
-import MailIcon from '../components/Icons/MailIcon';
+import MailIcon from '../../components/Icons/MailIcon';
+import {sendPasswordResetEmail} from 'firebase/auth';
+import {auth} from '../../../firebaseConfig';
 
 type ScreenName = 'Login' | 'ForgotPassword' | 'CreateNewAccount';
 
@@ -37,15 +39,18 @@ const ForgotPasswordScreen = ({navigate}: ForgotPasswordScreenProps) => {
     }
   };
 
-  const handleResetPassword = () => {
-    let isValid = true;
-
+  const handleResetPassword = async () => {
     if (!email || !validateEmail(email)) {
-      isValid = false;
+      setEmailError('Please enter a valid email');
+      return;
     }
 
-    if (isValid) {
-      Alert.alert('Success', 'Reset password sent to your email');
+    try {
+      await sendPasswordResetEmail(auth, email);
+      Alert.alert('Success', 'A reset link has been sent to your email');
+      setEmail('');
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'Something went wrong');
     }
   };
 
